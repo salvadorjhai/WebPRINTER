@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<main>
+    
+    <form action="@Url.Action("print","home")" method="get">
+        <div class="row">
+            <div class="col-lg-4">
+                <label>Select Printer:</label>
+                <select name="printer">
+                    @{
+                        foreach (var item in ViewBag.InstalledPrinter)
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    }
+                </select>
+                <button type="submit" class="btn btn-primary">Print</button>
+            </div>
+        </div>
+    </form>
+
+
+</main>
