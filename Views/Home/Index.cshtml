@@ -3,7 +3,9 @@
 }
 
 <main>
-    
+    <h2>
+        direct from server
+    </h2>
     <form action="@Url.Action("print","home")" method="get">
         <div class="row">
             <div class="col-lg-4">
@@ -21,5 +23,20 @@
         </div>
     </form>
 
+    <hr />
+    <h2>via desktop app (running on clients pc)</h2>
+    <form action="@Url.Action("print2","home")" method="post" enctype="multipart/form-data">
+        <div class="row mt-2">
+            <div class="col-lg-4">
+                <label>listener:</label>
+                <input type="text" name="listener" value="http://localhost:49956/" />
+            </div>
+            <div class="col-lg-4">
+                <label>PDF File:</label>
+                <input type="file" name="filename" />
+                <button type="submit" class="btn btn-primary">Print</button>
+            </div>
+        </div>
+    </form>
 
 </main>

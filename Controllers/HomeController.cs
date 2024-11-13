@@ -6,7 +6,10 @@ using System.Diagnostics;
 using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
+using System.Security.Policy;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -52,5 +55,37 @@ namespace WebPRINTER.Controllers
 
             return Content("OK");
         }
+
+        [HttpPost]
+        public async Task<ActionResult> Print2()
+        {
+            var listener = Request.Form["listener"];
+            var filename = Request.Files["filename"];
+            
+            if (filename == null || filename.ContentType.Contains("application/pdf")==false)
+            {
+                return Content("failed");
+            }
+
+            var tmp = Path.Combine(Path.GetTempPath(), "1.pdf");
+            filename.SaveAs(tmp);
+
+            string lokalprinter = $"{listener}?filename={tmp}";
+            string msg = string.Empty;
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.Timeout = TimeSpan.FromSeconds(10);
+                HttpResponseMessage getData = await client.GetAsync(lokalprinter);
+                if (getData.IsSuccessStatusCode)
+                {
+                    msg = getData.Content.ReadAsStringAsync().Result;
+                }
+            }
+
+            return Content("OK");
+        }
+
+
     }
 }
